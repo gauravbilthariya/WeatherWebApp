@@ -1,0 +1,54 @@
+<div id="container" *ngIf="{ error:  (error$ | async) } as pageData">
+  <div id="top-panel">
+    <div class="search-content">
+      <div class="input-group">
+        <div class="form-outline">
+          <input [formControl]="cityFormControl" type="search" id="form1" class="form-control" />
+        </div>
+      </div>
+      <button type="button" class="btn btn-primary" (click)="serachClick()">Search</button>
+    </div>
+    <div *ngIf="pageData.error !== null" class="error">{{ error$ | async }}</div>
+  </div>
+ 
+  <div id="bottom-panel" *ngIf="pageData.error == null && !loading">
+    <div class="current-weather">
+      <div class="city">{{model.city}}
+        <div class="dt"><span>{{model.weather.date}}</span> <span class="time">{{model.weather.time}}</span>
+        </div>
+      </div>
+      <div class="details">
+        <div class="display-flex"><span class="temp">{{model.weather.temp}}</span>
+          <div class="cel">°C</div>
+        </div>
+        <div>Feels like: <span>{{model.weather.tempFeelsLike}}</span><span>°C</span></div>
+        <div>Humidity: <span>{{model.weather.humidity}}%</span></div>
+        <div>Max: <span>{{model.weather.tempMax}}</span></div>
+        <div>MIn: <span>{{model.weather.tempMin}}</span></div>
+      </div>
+
+    </div>
+    <div class="forecast">
+      <div (click)="sortClick()" class="sort">⇅</div>
+      <ng-container *ngFor="let day of forecastDates">
+        <div class="fc-group">
+          <div class="date">
+            <div class="dt"><span>{{day}}</span></div>
+          </div>
+          <ng-container *ngFor="let data of model.fiveDayForeCast[day]">
+            <div class="day-forecast">
+              <div class="dt"><span>{{data.time}}</span></div>
+              <div class="details">
+                <div class="display-flex"><span class="temp">{{data.temp}}</span>
+                  <div class="cel">°C</div>
+                </div>
+                <div>Feels like: <span>{{data.tempFeelsLike}}</span><span>°C</span></div>
+                <div>Humidity: <span>{{data.humidity}}%</span></div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
